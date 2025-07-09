@@ -34,7 +34,7 @@
   },
   "qConfig": {
     "geometry": {
-      "width": 1,
+      "width": 3,
       "height": 1
     },
     "questions": [
@@ -53,6 +53,24 @@
         "required": true,
         "order": 2,
         "controlType": "textbox"
+      },
+      {
+        "key": "aqi",
+        "label": "Your preferred AQI",
+        "help": "Select between the US and European AQI",
+        "required": true,
+        "order": 3,
+        "controlType": "dropdown",
+        "options": [
+          {
+            "key": "us_aqi",
+            "value": "US Air Quality Index"
+          },
+          {
+            "key": "european_aqi",
+            "value": "European Air Quality Index"
+          }
+        ]
       }
     ]
   },
