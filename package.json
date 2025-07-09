@@ -1,0 +1,62 @@
+{
+  "name": "daskeyboard-applet--air-quality-monitor",
+  "displayName": "Air Quality Monitor",
+  "version": "1.0.0",
+  "description": "Displays local air quality index (AQI) and UV index.",
+  "longDescription": "Monitors environmental health metrics like AQI and UV index using color-coded keys. Great for people with asthma, or anyone concerned about air quality.",
+  "officialProductName": "Air Quality Monitor",
+  "publisherName": "Das Keyboard",
+  "publisher": "Das Keyboard",
+  "authorName": "Das Keyboard",
+  "authorUrl": "https://github.com/daskeyboard",
+  "issuesUrl": "https://github.com/Rubiksel/daskeyboard-applet--air-quality-monitor/issues",
+  "developerRepoUrl": "https://github.com/Rubiksel/daskeyboard-applet--air-quality-monitor",
+  "homePageUrl": "https://github.com/Rubiksel/daskeyboard-applet--air-quality-monitor",
+  "isSingleton": false,
+  "videoUrl": "",
+  "icon": "assets/icon.png",
+  "image": "assets/image.png",
+  "readMeUrl": "README.md",
+  "readMeEndUserUrl": "README_ENDUSER.md",
+  "changelogUrl": "CHANGELOG.md",
+  "license": "MIT",
+  "licenseUrl": "http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt",
+  "engines": {
+    "das-keyboard-q": "4.1.3"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "daskeyboard-applet": "^2.11.5",
+    "node-fetch": "^2.6.7"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "qConfig": {
+    "geometry": {
+      "width": 1,
+      "height": 1
+    },
+    "questions": [
+      {
+        "key": "latitude",
+        "label": "Your Latitude",
+        "help": "Enter your latitude (e.g., 30.2666 for Austin)",
+        "required": true,
+        "order": 1,
+        "controlType": "textbox"
+      },
+      {
+        "key": "longitude",
+        "label": "Your Longitude",
+        "help": "Enter your longitude (e.g., -97.7333 for Austin)",
+        "required": true,
+        "order": 2,
+        "controlType": "textbox"
+      }
+    ]
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
