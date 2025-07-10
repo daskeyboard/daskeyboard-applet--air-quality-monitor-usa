@@ -88,7 +88,7 @@ class AirQualityMonitor extends q.DesktopApp {
 
       return new q.Signal({
         name: "Air Quality Monitor",
-        message: `AQI: ${metrics.aqi}, UV: ${metrics.uv_index}, PM 2.5: ${metrics.pm2_5}`,
+        message: `AQI: ${metrics.aqi}, UV: ${metrics.uv_index}, PM2.5: ${metrics.pm2_5}`,
         points: points,
       });
     } catch (error) {
