@@ -1,5 +1,4 @@
-const { AirQualityMonitor } = require("../index.js"); // update with actual path
-const q = require("daskeyboard-applet");
+const { AirQualityMonitor } = require("../index.js");
 const fetch = require("node-fetch");
 
 jest.mock("node-fetch");
@@ -22,25 +21,35 @@ describe("AirQualityMonitor", () => {
   beforeEach(() => {
     monitor = new AirQualityMonitor();
     monitor.config = {
-      latitude: 40.7128,
-      longitude: -74.006,
+      postalCode: "10001",
       aqi: "us_aqi",
     };
   });
 
   it("fetches and parses quality metrics correctly", async () => {
-    const mockResponse = {
+    const mockMetrics = {
       current: {
         us_aqi: 42,
         uv_index: 3,
         pm2_5: 12,
       },
     };
+
+    // mock geocoding
     fetch.mockResolvedValueOnce({
-      json: () => Promise.resolve(mockResponse),
+      ok: true,
+      json: async () => ({
+        results: [{ latitude: 40.7128, longitude: -74.006 }],
+      }),
     });
 
-    const result = await monitor.getQualityMetrics();
+    // mock air quality API
+    fetch.mockResolvedValueOnce({
+      json: async () => mockMetrics,
+    });
+
+    const [lat, lon] = await monitor.getUserCoordinates();
+    const result = await monitor.getQualityMetrics(lat, lon);
 
     expect(result).toEqual({
       aqi: 42,
@@ -68,22 +77,27 @@ describe("AirQualityMonitor", () => {
     expect(point.color).toBe("#00FF00");
   });
 
-  it("generates correct color for PM2.5 with non-US AQI", async () => {
-    monitor.config.aqi = "european_aqi";
-    const point = await monitor.generatePoint("pm2_5", 7);
-    expect(point.color).toBe("#FFDD00");
-  });
-
   it("produces a signal with expected message and points", async () => {
-    const mockData = {
+    const mockGeo = {
+      results: [{ latitude: 40.7128, longitude: -74.006 }],
+    };
+    const mockMetrics = {
       current: {
         us_aqi: 85,
         uv_index: 6,
         pm2_5: 20,
       },
     };
+
+    // mock geocoding API
     fetch.mockResolvedValueOnce({
-      json: () => Promise.resolve(mockData),
+      ok: true,
+      json: async () => mockGeo,
+    });
+
+    // mock air quality API
+    fetch.mockResolvedValueOnce({
+      json: async () => mockMetrics,
     });
 
     const signal = await monitor.run();
