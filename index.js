@@ -10,21 +10,39 @@ class AirQualityMonitor extends q.DesktopApp {
     logger.info("Air Quality Monitor ready to launch!");
   }
 
-  async getQualityMetrics() {
+  async getQualityMetrics(latitude, longitude) {
     try {
       const response = await fetch(
-        `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${this.config.latitude}&longitude=${this.config.longitude}&current=uv_index,${this.config.aqi},pm2_5`
+        `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${latitude}&longitude=${longitude}&current=uv_index,us_aqi,pm2_5`
       );
       const data = await response.json();
 
       return {
-        aqi: data.current[this.config.aqi],
+        aqi: data.current.us_aqi,
         uv_index: data.current.uv_index,
         pm2_5: data.current.pm2_5,
       };
     } catch (error) {
       throw new Error(`Failed to get air quality metrics: ${error.message}`);
     }
+  }
+
+  async getUserCoordinates() {
+    const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${this.config.postalCode}&count=1&countryCode=US`;
+    const response = await fetch(geoUrl);
+
+    if (!response.ok) {
+      throw new Error(`Geocoding API failed: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    if (!data.results || data.results.length === 0) {
+      throw new Error(`Postal code not found: "${this.config.postalCode}".`);
+    }
+
+    const { latitude, longitude } = data.results[0];
+    return [latitude, longitude]; // returning the latitude and longitude of the user's location
   }
 
   async generatePoint(metricName, value) {
@@ -77,7 +95,8 @@ class AirQualityMonitor extends q.DesktopApp {
 
   async run() {
     try {
-      const metrics = await this.getQualityMetrics();
+      const [latitude, longitude] = await this.getUserCoordinates();
+      const metrics = await this.getQualityMetrics(latitude, longitude);
       const points = [
         [
           await this.generatePoint("aqi", metrics.aqi),
