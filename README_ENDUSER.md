@@ -32,14 +32,12 @@ Monitor **AQI**, **UV Index**, and **PM2.5** levels directly on your keyboard!
 
 ---
 
-## 🌍 How to Find Your Coordinates
+## 🇺🇸 Entering Your Location (USA Only)
 
-You can get your precise location in several ways:
+To track local environmental data, just enter your **5-digit US postal code**.
 
-- **Google Maps**: Right-click on your home → click “What’s here?” to get latitude/longitude
-- **Mobile Phone**: Use your map or weather app to grab your GPS coordinates
-- **Web Search**: Search for “`[Your City] coordinates`”
+You can find your postal code by:
 
-Example:  
-`Latitude: 30.2666`  
-`Longitude: -97.7333` (Austin)
+- Checking your mailing address
+- Searching online: “postal code for [Your City, State]”
+- Using your phone’s weather app or GPS
