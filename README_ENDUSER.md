@@ -15,11 +15,21 @@ Monitor **AQI**, **UV Index**, and **PM2.5** levels directly on your keyboard!
 - 🔴 **Red** when conditions are poor
 - 🟣 **Purple** for a very high UV index or severe pollution
 - 🟤 **Maroon** for extremely severe pollution
-- 💡 Displays **three live metrics** on **three separate keys**:
+- 💡 Displays **three live metrics** on **three separate keys** (from left to right):
   - **AQI** (Air Quality Index)
   - **UV Index** (sun exposure risk)
   - **PM2.5** (fine particulate pollution)
 - 📡 Uses accurate real-time data from [Open-Meteo Air Quality API](https://open-meteo.com/en/docs/air-quality-api)
+
+```
++-----------+     +-----------+     +-----------+
+|           |     |           |     |           |
+|   AQI     | --> | UV Index  | --> |  PM2.5    |
+|           |     |           |     |           |
++-----------+     +-----------+     +-----------+
+
+Leftmost Key      Middle Key        Rightmost Key
+```
 
 ---
 
@@ -41,3 +51,7 @@ You can find your postal code by:
 - Checking your mailing address
 - Searching online: “postal code for [Your City, State]”
 - Using your phone’s weather app or GPS
+
+```
+
+```
