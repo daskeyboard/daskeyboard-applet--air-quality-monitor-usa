@@ -1,7 +1,7 @@
 # 🌿 Air Quality Monitor – Das Keyboard Applet
 
-Track your **local environmental health** in real time using this applet for Das Keyboard Q.  
-Monitor **AQI**, **UV Index**, and **PM2.5** levels directly on your keyboard!
+Track your local environmental health in real time using this applet for Das Keyboard Q.
+It displays live **AQI**, **UV Index**, and **PM2.5** readings across three dedicated keys on your keyboard — giving you instant visual feedback at a glance.
 
 ![Air Quality Monitor on a Das Keyboard Q](assets/image.png "Air Quality Monitor")
 
@@ -20,16 +20,6 @@ Monitor **AQI**, **UV Index**, and **PM2.5** levels directly on your keyboard!
   - **UV Index** (sun exposure risk)
   - **PM2.5** (fine particulate pollution)
 - 📡 Uses accurate real-time data from [Open-Meteo Air Quality API](https://open-meteo.com/en/docs/air-quality-api)
-
-```
-+-----------+     +-----------+     +-----------+
-|           |     |           |     |           |
-|   AQI     | --> | UV Index  | --> |  PM2.5    |
-|           |     |           |     |           |
-+-----------+     +-----------+     +-----------+
-
-Leftmost Key      Middle Key        Rightmost Key
-```
 
 ---
 
@@ -51,7 +41,3 @@ You can find your postal code by:
 - Checking your mailing address
 - Searching online: “postal code for [Your City, State]”
 - Using your phone’s weather app or GPS
-
-```
-
-```
