@@ -3,11 +3,34 @@ const fetch = require("node-fetch");
 const logger = q.logger;
 
 class AirQualityMonitor extends q.DesktopApp {
+  COLORS = {
+    GREEN: "#00FF00",
+    YELLOW: "#FFDD00",
+    ORANGE: "#FF6600",
+    RED: "#FF0000",
+    PURPLE: "#FF00C8",
+    MAROON: "#550000",
+  };
+
   constructor() {
     super();
     this.pollingInterval = 60 * 15 * 1000; // runs every 15 minutes
 
     logger.info("Air Quality Monitor ready to launch!");
+  }
+
+  async applyConfig() {
+    if (!this.config.postalCode) {
+      throw new Error("Postal code is required.");
+    }
+    const location = await this.getUserCoordinates();
+
+    this.userLat = location.latitude;
+    this.userLon = location.longitude;
+    logger.info(
+      `User coordinates set to: ${location.latitude}, ${location.longitude}`
+    );
+    return true;
   }
 
   async getQualityMetrics(latitude, longitude) {
@@ -41,8 +64,7 @@ class AirQualityMonitor extends q.DesktopApp {
       throw new Error(`Postal code not found: "${this.config.postalCode}".`);
     }
 
-    const { latitude, longitude } = data.results[0];
-    return [latitude, longitude]; // returning the latitude and longitude of the user's location
+    return data.results[0];
   }
 
   async generatePoint(metricName, value) {
@@ -53,50 +75,39 @@ class AirQualityMonitor extends q.DesktopApp {
     switch (metricName) {
       case "aqi":
         name = "AQI";
-        if (value <= 50) color = "#00FF00"; // green
-        else if (value <= 100) color = "#FFDD00"; // yellow
-        else if (value <= 150) color = "#FF6600"; // orange
-        else if (value <= 200) color = "#FF0000"; // red
-        else if (value <= 300) color = "#FF00C8"; // purple
-        else color = "#550000"; // maroon
+        if (value <= 50) color = this.COLORS.GREEN; // green
+        else if (value <= 100) color = this.COLORS.YELLOW; // yellow
+        else if (value <= 150) color = this.COLORS.ORANGE; // orange
+        else if (value <= 200) color = this.COLORS.RED; // red
+        else if (value <= 300) color = this.COLORS.PURPLE; // purple
+        else color = this.COLORS.MAROON; // maroon
         break;
 
       case "uv_index":
         name = "UV Index";
-        if (value <= 2) color = "#00FF00"; // green
-        else if (value <= 5) color = "#FFDD00"; // yellow
-        else if (value <= 7) color = "#FF6600"; // orange
-        else if (value <= 10) color = "#FF0000"; // red
-        else color = "#FF00C8"; // purple
+        if (value <= 2) color = this.COLORS.GREEN; // green
+        else if (value <= 5) color = this.COLORS.YELLOW; // yellow
+        else if (value <= 7) color = this.COLORS.ORANGE; // orange
+        else if (value <= 10) color = this.COLORS.RED; // red
+        else color = this.COLORS.PURPLE; // purple
         break;
 
       case "pm2_5":
         name = "PM 2.5";
-        if (this.config.aqi === "us_aqi") {
-          if (value <= 9) color = "#00FF00"; // green
-          else if (value <= 35) color = "#FFDD00"; // yellow
-          else if (value <= 55) color = "#FF6600"; // orange
-          else if (value <= 125) color = "#FF0000"; // red
-          else if (value <= 225) color = "#FF00C8"; // purple
-          else color = "#550000"; // maroon
-          break;
-        } else {
-          if (value <= 5) color = "#00FF00"; //green
-          else if (value <= 15) color = "#FFDD00"; // yellow
-          else if (value <= 50) color = "#FF6600"; //orange
-          else if (value <= 90) color = "#FF0000"; // red
-          else if (value <= 140) color = "#FF00C8"; // purple
-          else color = "#550000"; // maroon
-          break;
-        }
+        if (value <= 9) color = this.COLORS.GREEN; // green
+        else if (value <= 35) color = this.COLORS.YELLOW; // yellow
+        else if (value <= 55) color = this.COLORS.ORANGE; // orange
+        else if (value <= 125) color = this.COLORS.RED; // red
+        else if (value <= 225) color = this.COLORS.PURPLE; // purple
+        else color = this.COLORS.MAROON; // maroon
+        break;
     }
     return new q.Point(color, effect);
   }
 
   async run() {
     try {
-      const [latitude, longitude] = await this.getUserCoordinates();
-      const metrics = await this.getQualityMetrics(latitude, longitude);
+      const metrics = await this.getQualityMetrics(this.userLat, this.userLon);
       const points = [
         [
           await this.generatePoint("aqi", metrics.aqi),

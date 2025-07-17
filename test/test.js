@@ -21,12 +21,16 @@ describe("AirQualityMonitor", () => {
   beforeEach(() => {
     monitor = new AirQualityMonitor();
     monitor.config = {
-      postalCode: "10001",
+      postalCode: "90001",
       aqi: "us_aqi",
     };
   });
 
   it("fetches and parses quality metrics correctly", async () => {
+    const mockGeo = {
+      results: [{ latitude: 40.7128, longitude: -74.006 }],
+    };
+
     const mockMetrics = {
       current: {
         us_aqi: 42,
@@ -38,9 +42,7 @@ describe("AirQualityMonitor", () => {
     // mock geocoding
     fetch.mockResolvedValueOnce({
       ok: true,
-      json: async () => ({
-        results: [{ latitude: 40.7128, longitude: -74.006 }],
-      }),
+      json: async () => mockGeo,
     });
 
     // mock air quality API
@@ -48,8 +50,11 @@ describe("AirQualityMonitor", () => {
       json: async () => mockMetrics,
     });
 
-    const [lat, lon] = await monitor.getUserCoordinates();
-    const result = await monitor.getQualityMetrics(lat, lon);
+    const location = await monitor.getUserCoordinates();
+    const result = await monitor.getQualityMetrics(
+      location.latitude,
+      location.longitude
+    );
 
     expect(result).toEqual({
       aqi: 42,
@@ -99,6 +104,9 @@ describe("AirQualityMonitor", () => {
     fetch.mockResolvedValueOnce({
       json: async () => mockMetrics,
     });
+
+    // simulate config initialization
+    await monitor.applyConfig();
 
     const signal = await monitor.run();
 
