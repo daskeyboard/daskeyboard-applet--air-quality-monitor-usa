@@ -1,7 +1,7 @@
 {
   "name": "daskeyboard-applet--air-quality-monitor-usa",
   "displayName": "Air Quality Monitor - USA",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Displays local air quality index (AQI) and UV index.",
   "longDescription": "Monitors environmental health metrics like AQI and UV index using color-coded keys. Great for people with asthma, or anyone concerned about air quality.",
   "officialProductName": "Air Quality Monitor - USA",

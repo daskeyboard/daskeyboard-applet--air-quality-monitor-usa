@@ -1,5 +1,7 @@
 # Air Quality Monitor - USA
 
+This applet's source code can be found [here](https://github.com/daskeyboard/daskeyboard-applet--air-quality-monitor-usa).
+
 Track your local environmental health in real time using this applet for the Das Keyboard Q series.
 It displays live **AQI**, **UV Index**, and **PM2.5** readings across three dedicated keys on your keyboard — giving you instant visual feedback at a glance.
 
