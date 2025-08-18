@@ -2,7 +2,7 @@
 # Changelog Q Applet Air Quality Monitor - USA
 
 ## Version 1.0.2 - August 18, 2025
-- Updated README.md
+- Updated README.md and README_ENDUSER.md
 
 ## Version 1.0.1 - July 28, 2025
 - Updated README.md
